@@ -274,7 +274,7 @@ if ( ! class_exists( 'WC_Cebelcabiz' ) ) {
 				'postal'         => $order->get_billing_postcode(),
 				'city'           => $order->get_billing_city(),
 				'country'        => $order->get_billing_country(),
-				'vatid'          => $vatNum || $vatNumber, // TODO -- find where the data is
+				'vatid'          => isset($vatNum) ? $vatNum:$vatNumber, // TODO -- find where the data is
 				'phone'          => $order->get_billing_phone(), //$c->phone.($c->phone_mobile?", ":"").$c->phone_mobile,
 				'website'        => "",
 				'email'          => $order->get_billing_email(),

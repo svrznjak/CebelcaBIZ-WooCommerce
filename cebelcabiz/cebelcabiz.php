@@ -263,10 +263,10 @@ if ( ! class_exists( 'WC_Cebelcabiz' ) ) {
 			$api = new InvfoxAPI( $this->conf['api_key'], $this->conf['api_domain'], true );
 //			$api->setDebugHook( "woocomm_invfox__trace" );
 
-			$vatNum = get_post_meta( $order->get_id(), 'VAT Number', true );
+			//$vatNum = get_post_meta( $order->get_id(), 'VAT Number', true );
 
-			$vatNumber = get_post_meta( $order->id, 'vat_number', true );
-			$vatBound = get_post_meta( $order->id, 'vat_bound', true );
+			$vatNumber = get_post_meta( $order->get_id(), 'vat_number', true );
+			$vatBound = get_post_meta( $order->get_id(), 'vat_bound', true );
 
 			$r = $api->assurePartner( array(
 				'name'           => $order->get_billing_first_name() . " " . $order->get_billing_last_name() . ( $order->get_billing_company() ? ", " : "" ) . $order->get_billing_company(),
@@ -274,12 +274,12 @@ if ( ! class_exists( 'WC_Cebelcabiz' ) ) {
 				'postal'         => $order->get_billing_postcode(),
 				'city'           => $order->get_billing_city(),
 				'country'        => $order->get_billing_country(),
-				'vatid'          => isset($vatNum) ? $vatNum:$vatNumber, // TODO -- find where the data is
+				'vatid'          => $vatNumber, // TODO -- find where the data is
 				'phone'          => $order->get_billing_phone(), //$c->phone.($c->phone_mobile?", ":"").$c->phone_mobile,
 				'website'        => "",
 				'email'          => $order->get_billing_email(),
 				'notes'          => '',
-				'vatbound'       =>	-- after (2)
+				'vatbound'       => ! ! $vatBound, //!!$c->vat_number, TODO -- after (2)
 				'custaddr'       => '',
 				'payment_period' => $this->conf['customer_general_payment_period'],
 				'street2'        => ''

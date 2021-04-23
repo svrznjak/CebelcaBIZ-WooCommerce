@@ -279,7 +279,7 @@ if ( ! class_exists( 'WC_Cebelcabiz' ) ) {
 				'website'        => "",
 				'email'          => $order->get_billing_email(),
 				'notes'          => '',
-				'vatbound'       => ! ! $vatBound, //!!$c->vat_number, TODO -- after (2)
+				'vatbound'       =>	-- after (2)
 				'custaddr'       => '',
 				'payment_period' => $this->conf['customer_general_payment_period'],
 				'street2'        => ''

@@ -251,7 +251,7 @@ if ( ! class_exists( 'WC_Cebelcabiz' ) ) {
 		 */
 		function _make_document_in_invoicefox( $order_id, $document_to_make = "", $markPaid = 0, $decreaseInventory = 0 ) {
 
-			$order = new WC_Order( $order_id );
+			$order = wc_get_order( $order_id );
 
 			if ( $document_to_make ) {
 				$this->conf['document_to_make'] = $document_to_make;
@@ -265,18 +265,21 @@ if ( ! class_exists( 'WC_Cebelcabiz' ) ) {
 
 			$vatNum = get_post_meta( $order->get_id(), 'VAT Number', true );
 
+			$vatNumber = get_post_meta( $order->id, 'vat_number', true );
+			$vatBound = get_post_meta( $order->id, 'vat_bound', true );
+
 			$r = $api->assurePartner( array(
 				'name'           => $order->get_billing_first_name() . " " . $order->get_billing_last_name() . ( $order->get_billing_company() ? ", " : "" ) . $order->get_billing_company(),
 				'street'         => $order->get_billing_address_1() . "\n" . $order->get_billing_address_2(),
 				'postal'         => $order->get_billing_postcode(),
 				'city'           => $order->get_billing_city(),
 				'country'        => $order->get_billing_country(),
-				'vatid'          => $vatNum, // TODO -- find where the data is
+				'vatid'          => $vatNum || $vatNumber, // TODO -- find where the data is
 				'phone'          => $order->get_billing_phone(), //$c->phone.($c->phone_mobile?", ":"").$c->phone_mobile,
 				'website'        => "",
 				'email'          => $order->get_billing_email(),
 				'notes'          => '',
-				'vatbound'       => ! ! $vatNum, //!!$c->vat_number, TODO -- after (2)
+				'vatbound'       => ! ! $vatBound, //!!$c->vat_number, TODO -- after (2)
 				'custaddr'       => '',
 				'payment_period' => $this->conf['customer_general_payment_period'],
 				'street2'        => ''

@@ -265,8 +265,13 @@ if ( ! class_exists( 'WC_Cebelcabiz' ) ) {
 
 			//$vatNum = get_post_meta( $order->get_id(), 'VAT Number', true );
 
-			$vatNumber = get_post_meta( $order->get_id(), 'vat_number', true );
-			$vatBound = get_post_meta( $order->get_id(), 'vat_bound', true );
+			$vatNumber = get_post_meta( $order->get_id(), 'billing_davcna_st', true );
+			
+			$vatBound = 0;
+
+			if(get_post_meta( $order->get_id(), 'billing_davcni_zavezanec', true ) == "1"){
+				$vatBound = 1;
+			}
 
 			$r = $api->assurePartner( array(
 				'name'           => $order->get_billing_first_name() . " " . $order->get_billing_last_name() . ( $order->get_billing_company() ? ", " : "" ) . $order->get_billing_company(),
@@ -279,7 +284,7 @@ if ( ! class_exists( 'WC_Cebelcabiz' ) ) {
 				'website'        => "",
 				'email'          => $order->get_billing_email(),
 				'notes'          => '',
-				'vatbound'       => ! ! $vatBound, //!!$c->vat_number, TODO -- after (2)
+				'vatbound'       => $vatBound, //!!$c->vat_number, TODO -- after (2)
 				'custaddr'       => '',
 				'payment_period' => $this->conf['customer_general_payment_period'],
 				'street2'        => ''
